@@ -1,6 +1,17 @@
 <?php
 require __DIR__ . '/../src/bootstrap.php';
 
+use Service\Auth;
+
+// Redirect unauthenticated users to the login page (except when already requesting login)
+$requestedController = strtolower($_GET['controller'] ?? 'student');
+$requestedAction = strtolower($_GET['action'] ?? 'index');
+
+if (!Auth::check() && !($requestedController === 'auth' && $requestedAction === 'login')) {
+    header('Location: ' . BASE_URL . '/?controller=auth&action=login&redirect=' . urlencode($_SERVER['REQUEST_URI']));
+    exit;
+}
+
 $controllerName = ucfirst(strtolower($_GET['controller'] ?? 'student')) . 'Controller';
 $action = $_GET['action'] ?? 'index';
 

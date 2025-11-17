@@ -12,6 +12,5 @@ spl_autoload_register(function ($class) {
 
 use Model\Database;
 
-// initialize DB connection singleton
 Database::init($config['db']);
 define('BASE_URL', rtrim($config['base_url'], '/'));
